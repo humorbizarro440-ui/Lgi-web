@@ -3,7 +3,7 @@
 // ============================================================
 
 // ⚠️ ATENÇÃO: substitua pela URL real do seu backend no PythonAnywhere
-const API_URL = "https://seu-usuario.pythonanywhere.com";
+const API_URL = "https://lindeval.pythonanywhere.com";
 
 // ------------------------------------------------------------------
 // SUBMISSÃO DO FORMULÁRIO DE DNA
