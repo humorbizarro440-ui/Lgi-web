@@ -1,0 +1,33 @@
+/* Estilos personalizados para o LGI Web */
+body {
+    background: #f8f9fa;
+}
+
+header {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+}
+
+.card {
+    border-radius: 15px;
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.mutacao-item {
+    padding: 8px 12px;
+    border-left: 4px solid #0d6efd;
+    margin-bottom: 6px;
+    background: white;
+    border-radius: 4px;
+}
+
+.badge-tipo {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+}
+
+footer {
+    margin-top: 50px;
+}
