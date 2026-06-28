@@ -2,8 +2,31 @@
 // LGI Web – JavaScript (Frontend)
 // ============================================================
 
-// ⚠️ ATENÇÃO: substitua pela URL real do seu backend no PythonAnywhere
-const API_URL = "https://lindeval.pythonanywhere.com";
+// Default backend URL — change if you host the backend elsewhere.
+const DEFAULT_API = "https://lindeval.pythonanywhere.com";
+let API_URL = DEFAULT_API || window.location.origin;
+
+// Helper: try HEAD to check if API is reachable (may be opaque due to CORS).
+async function isApiReachable() {
+  try {
+    const resp = await fetch(API_URL, { method: 'HEAD', mode: 'no-cors' });
+    return resp && (resp.ok || resp.type === 'opaque');
+  } catch (e) {
+    return false;
+  }
+}
+
+// Helper: show a global Bootstrap alert message
+function showUserMessage(message, type = 'danger') {
+  let container = document.getElementById('globalMessage');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'globalMessage';
+    container.className = 'container mt-3';
+    document.body.insertBefore(container, document.body.firstChild);
+  }
+  container.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+}
 
 // ------------------------------------------------------------------
 // SUBMISSÃO DO FORMULÁRIO DE DNA
@@ -18,6 +41,8 @@ document.getElementById('formDNA').addEventListener('submit', async function(e) 
 
     const formData = new FormData(this);
     try {
+        // optional: you can check API availability before calling
+        // if (!(await isApiReachable())) { showUserMessage('Backend pode estar indisponível. Tentando de qualquer forma...', 'warning'); }
         const resp = await fetch(`${API_URL}/analisar/dna`, {
             method: 'POST',
             body: formData
@@ -26,7 +51,7 @@ document.getElementById('formDNA').addEventListener('submit', async function(e) 
         const data = await resp.json();
         mostrarResultadoDNA(data);
     } catch (err) {
-        alert('Erro: ' + err.message);
+        showUserMessage('Erro ao comunicar com o backend: ' + (err.message || err) + '. Verifique API_URL em script.js.', 'danger');
     } finally {
         btn.disabled = false;
         spinner.style.display = 'none';
@@ -47,6 +72,7 @@ document.getElementById('formProteina').addEventListener('submit', async functio
 
     const formData = new FormData(this);
     try {
+        // if (!(await isApiReachable())) { showUserMessage('Backend pode estar indisponível. Tentando de qualquer forma...', 'warning'); }
         const resp = await fetch(`${API_URL}/analisar/proteina`, {
             method: 'POST',
             body: formData
@@ -55,7 +81,7 @@ document.getElementById('formProteina').addEventListener('submit', async functio
         const data = await resp.json();
         mostrarResultadoProteina(data);
     } catch (err) {
-        alert('Erro: ' + err.message);
+        showUserMessage('Erro ao comunicar com o backend: ' + (err.message || err) + '. Verifique API_URL em script.js.', 'danger');
     } finally {
         btn.disabled = false;
         spinner.style.display = 'none';
